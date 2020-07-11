@@ -1,20 +1,24 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Serveur HTTP pour API REST",
+  "description": "Node.js Restful CRUD API with Node.js, Express and MongoDB",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "nodejs",
     "server",
-    "http",
-    "api",
-    "rest"
+    "apiRest",
+    "mongodb",
+    "express"
   ],
   "author": "Timer crew",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.23"
   }
 }
