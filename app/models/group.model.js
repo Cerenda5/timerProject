@@ -3,7 +3,13 @@ module.exports = mongoose => {
       {
         groupName: String,
         admin: Boolean,
-        members: String
+        members: [{
+          user_id: {
+            type: mongoose.Types.ObjectId,
+            ref: 'user',
+            require: "user is required"
+          }
+        }]
       },
       { timestamps: true }
   );
