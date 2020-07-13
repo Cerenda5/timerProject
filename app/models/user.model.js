@@ -1,5 +1,5 @@
 module.exports = mongoose => {
-  var schema = mongoose.Schema(
+  var userSchema = mongoose.Schema(
       {
         userName: String,
         email: String,
@@ -9,12 +9,12 @@ module.exports = mongoose => {
   );
 
 // Transform _id by id for the front-end 
-  schema.method("toJSON", function() {
+  userSchema.method("toJSON", function() {
     const { __v, _id, ...object } = this.toObject();
     object.id = _id;
     return object;
   });
 
-  const User = mongoose.model("user", schema);
+  const User = mongoose.model("user", userSchema);
   return User;
 };
