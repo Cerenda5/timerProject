@@ -9,6 +9,13 @@ module.exports = mongoose => {
             ref: 'user',
             require: "user is required"
           }
+        }],
+        projects: [{
+          project_id: {
+            type: mongoose.Types.ObjectId,
+            ref: 'project',
+            require: "project is required"
+          }
         }]
       },
       { timestamps: true }

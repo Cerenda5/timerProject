@@ -14,6 +14,7 @@ const group = new Group({
   groupName: req.body.groupName,
   admin: req.body.admin,
   members: req.body.members,
+  projects: req.body.projects,
 });
 
 // Save Group in the database
