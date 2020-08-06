@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   node:
-    container_name: project_timer_node
+    container_name: timer-project
     image: 'node:latest'
     working_dir: /home/node/app
     command:
@@ -11,18 +11,18 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - './src:/home/node/app'
-    links:
-      - mongo
+      - './api:/home/node/app'
     networks:
-      - timer-network
+      - API
+
   mongo:
-    container_name: project_timer_mongo
-    image: mongo
-    ports:
-      - "27017:27017"
+    container_name: mongo
+    image: mongo:latest
     networks:
-      - timer-network
-networks:
-  timer-network:
+      - API
+
+networks: 
+  API: 
     driver: bridge
+    
+    

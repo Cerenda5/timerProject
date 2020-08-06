@@ -1,20 +1,37 @@
-const db = require("../models");
-const User = db.users;
+const mongoose = require('mongoose');
+const userModel = require('../models/user.model')
+const usermodel = mongoose.model("User");
+
 
 // Create and Save a new User
 exports.create = (req, res) => {
-// Validate request
-if (!req.body.userName) {
-  res.status(400).send({ message: "Content can not be empty!" });
-  return;
-}
+
 
 // Create a User
-const user = new User({
-  userName: req.body.userName,
+const user = new userModel({
+  firstName: req.body.firstName,
+  lastName: req.body.lastName,
   email: req.body.email,
-  password: req.body.password,
+  password: req.body.password
 });
+
+// Validate request
+if (!req.body.firstName) {
+  res.status(400).send({ message: "Firstname content can not be empty!" });
+  return;
+}
+if (!req.body.lastName) {
+  res.status(400).send({ message: "Lastname content can not be empty!" });
+  return;
+}
+if (!req.body.email) {
+  res.status(400).send({ message: "Email content can not be empty!" });
+  return;
+}
+if (!req.body.password) {
+  res.status(400).send({ message: "Password content can not be empty!" });
+  return;
+}
 
 // Save User in the database
   user.save(user)
@@ -31,10 +48,10 @@ const user = new User({
 
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
-  const userName = req.query.userName;
-  var condition = userName ? { userName: { $regex: new RegExp(userName), $options: "i" } } : {};
+  const firstName = req.query.firstName;
+  let condition = firstName ? { firstName: { $regex: new RegExp(firstName), $options: "i" } } : {};
 
-  User.find(condition)
+  usermodel.find(condition)
     .then(data => {
       res.send(data);
     })
@@ -50,7 +67,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  User.findById(id)
+  usermodel.findById(id)
     .then(data => {
       if (!data)
         res.status(404).send({ message: "Not found User with id " + id });
@@ -74,7 +91,7 @@ exports.update = (req, res) => {
 
   const id = req.params.id;
 
-  User.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+  usermodel.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then(data => {
       if (!data) {
         res.status(404).send({
@@ -93,7 +110,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  User.findByIdAndRemove(id)
+  usermodel.findByIdAndRemove(id)
     .then(data => {
       if (!data) {
         res.status(404).send({
@@ -110,5 +127,4 @@ exports.delete = (req, res) => {
         message: "Could not delete User with id=" + id
       });
     });
-  
 };
