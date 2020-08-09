@@ -1,18 +1,19 @@
-const db = require("../models");
-const Project = db.projects;
+const mongoose = require('mongoose');
+const projectModel = require('../models/project.model')
+const projectmodel = mongoose.model("Project");
+
 
 // Create and Save a new Project
 exports.create = (req, res) => {
 // Validate request
 if (!req.body.projectName) {
-  res.status(400).send({ message: "Content can not be empty!" });
+  res.status(400).send({ message: "projectName content can not be empty!" });
   return;
 }
 
 // Create a Project
-const project = new Project({
+const project = new projectModel({
   projectName: req.body.projectName,
-  projectTeam: req.body.projectTeam,
 });
 
 // Save Project in the database
@@ -31,9 +32,9 @@ const project = new Project({
 // Retrieve all Projects from the database.
 exports.findAll = (req, res) => {
   const projectName = req.query.projectName;
-  var condition = projectName ? { projectName: { $regex: new RegExp(projectName), $options: "i" } } : {};
+  let condition = projectName ? { projectName: { $regex: new RegExp(projectName), $options: "i" } } : {};
 
-  Project.find(condition)
+  projectmodel.find(condition)
     .then(data => {
       res.send(data);
     })
@@ -49,7 +50,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Project.findById(id)
+  projectmodel.findById(id)
     .then(data => {
       if (!data)
         res.status(404).send({ message: "Not found Project with id " + id });
@@ -73,7 +74,7 @@ exports.update = (req, res) => {
 
   const id = req.params.id;
 
-  Project.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+  projectmodel.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then(data => {
       if (!data) {
         res.status(404).send({
@@ -92,7 +93,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Project.findByIdAndRemove(id)
+  projectmodel.findByIdAndRemove(id)
     .then(data => {
       if (!data) {
         res.status(404).send({
