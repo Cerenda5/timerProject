@@ -8,8 +8,6 @@ const projectRoutes = require('./routes/projects');
 const groupRoutes = require('./routes/groups');
 
 // Connect to DB
-
-
 mongoose.connect(
     'mongodb+srv://Timer:swdcfrmyc475@timerproject.3tnvk.mongodb.net/timer?retryWrites=true&w=majority',
     { 

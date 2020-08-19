@@ -124,7 +124,7 @@ router.delete('/:projectId', (req, res, next) => {
             request: {
                 type: 'POST',
                 url: 'http://localhost:3000/projects/',
-                description: 'You can post a new project with this body :',
+                description: 'You can create a new project with this body :',
                 body: {name: 'String'}
             },
         });
