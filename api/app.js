@@ -1,3 +1,4 @@
+require('dotenv').config(); //Variable environnement
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
@@ -6,14 +7,16 @@ const mongoose = require('mongoose');
 
 const projectRoutes = require('./routes/projects');
 const groupRoutes = require('./routes/groups');
+const userRoutes = require('./routes/user');
 
 // Connect to DB
 mongoose.connect(
-    'mongodb+srv://Timer:swdcfrmyc475@timerproject.3tnvk.mongodb.net/timer?retryWrites=true&w=majority',
+    'mongodb+srv://Timer:' + process.env.MONGO_PW + '@timerproject.3tnvk.mongodb.net/timer?retryWrites=true&w=majority',
     { 
         useNewUrlParser: true,
         useUnifiedTopology: true, 
         useFindAndModify: true,
+        useCreateIndex: true
     }, (err, res) => { 
         if (err) throw err;  
         console.log('Connected to MongoDb database');
@@ -40,6 +43,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/projects', projectRoutes);
 app.use('/groups', groupRoutes);
+app.use('/user', userRoutes);
 
 // Not find Error
 app.use((req, res, next) => {

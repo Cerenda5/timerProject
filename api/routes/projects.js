@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+
+const checkAuth = require('../middleware/check-auth');
 const Project = require('../models/project');
-const { json } = require('body-parser');
 
 router.get('/', (req, res, next) => {
    Project.find()
@@ -32,7 +33,7 @@ router.get('/', (req, res, next) => {
    });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/' ,(req, res, next) => {
     const project = new Project({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name
