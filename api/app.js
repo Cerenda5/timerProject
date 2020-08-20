@@ -1,43 +1,65 @@
 require('dotenv').config(); //Variable environnement
-const express = require ('express');
+const express = require('express');
+const app = express();
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const cors = require('cors'); //cors fournit un middleware Express pour activer CORS avec diverses options.
-const dbconfig = require('./config/db.config')
-const userRoute = require('./src/routes/user.routes');
-const projectRoutes = require('./src/routes/project.routes');
 
-const app = express();
-let corsOptions = {
-  origin: "http://localhost:8080"
-};
+const projectRoutes = require('./routes/projects');
+const groupRoutes = require('./routes/groups');
+const userRoutes = require('./routes/user');
 
-//  CORS
-app.use(cors(corsOptions)); // parse requests of content-type - application/json
-app.use(bodyParser.json()); // parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
-
-console.log(dbconfig.db());
+// Connect to DB
+mongoose.connect(
+    'mongodb+srv://Timer:' + process.env.MONGO_PW + '@timerproject.3tnvk.mongodb.net/timer?retryWrites=true&w=majority',
+    { 
+        useNewUrlParser: true,
+        useUnifiedTopology: true, 
+        useFindAndModify: true,
+        useCreateIndex: true
+    }, (err, res) => { 
+        if (err) throw err;  
+        console.log('Connected to MongoDb database');
+});
 mongoose.Promise = global.Promise;
-mongoose
-  .connect(dbconfig.db(), {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useCreateIndex: true
-  })
-  .then(() => {
-    console.log("Connected to the database!");
-  })
-  .catch(err => {
-    console.log("Cannot connect to the database!", err);
-    process.exit();
-  });
 
-userRoute(app);
-projectRoutes(app);
+app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
-app.listen(process.env.NODE_ENV === "development" ? process.env.DEV_SRV_PORT : process.env.PORT, () =>{
-  if(process.env.NODE_ENV === "development"){
-    console.log('App Listening on Host: ' + process.env.SRV_HOST + ' / Port server: ' + process.env.DEV_SRV_PORT);
-  }
+// Cors
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 
+               'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE');
+        return res.status(200).json({});
+    }
+    next();
+});
+
+// Routes
+app.use('/projects', projectRoutes);
+app.use('/groups', groupRoutes);
+app.use('/user', userRoutes);
+
+// Not find Error
+app.use((req, res, next) => {
+    const error = new Error('Not found');
+    error.status= 404;
+    next(error);
 })
+
+// Middleware Error
+app.use((error, req, res, next) => {
+    res.status(error.status || 500);
+    res.json({
+        error: {
+            message: error.message
+        }
+    });
+});
+
+module.exports = app;
