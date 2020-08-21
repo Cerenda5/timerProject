@@ -1,7 +1,6 @@
 <template>
   <div id="header">
-    <router-link to="/">Home</router-link>
-    <router-link to="/new-user">New user</router-link>
+    <router-link to="/"><img alt="Ti:mer logo" title="Ti:mer logo" src="../assets/logo_white.png"></router-link>
   </div>
 </template>
 
@@ -19,7 +18,7 @@ export default {
   background-color: var(--medium-blue);
 }
 
-#header a:not(:last-child) {
-  margin-right: 10px;
+#header img {
+  height: 100%;
 }
 </style>

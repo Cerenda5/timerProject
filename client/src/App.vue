@@ -2,6 +2,7 @@
   <div id="app">
     <the-header></the-header>
     <div id="content">
+      <the-side-menu></the-side-menu>
       <router-view></router-view>
     </div>
   </div>
@@ -9,18 +10,24 @@
 
 <script>
 import TheHeader from './components/TheHeader.vue'
+import TheSideMenu from './components/TheSideMenu.vue'
 
 export default {
   name: 'App',
   components: {
-    TheHeader
+    TheHeader,
+    TheSideMenu
   }
 }
 </script>
 
 <style>
 :root {
+  --dark-blue: #004C59;
   --medium-blue: #00728C;
+  --clear-blue: #49B0C1;
+  --dark-grey: #E6E6E6;
+  --clear-grey: #F2F2F2;
   --white: #FFF;
   --black: #000;
 }
