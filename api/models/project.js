@@ -4,9 +4,10 @@ const projectSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: {
         type: String,
-        required: true,
-        min: 3,
-        max: 20
+        required: [true, , 'Project name is required'],
+        match: /[a-z]/,
+        minlength: [3, 'Project name too short !'],
+        maxlength: [20 , 'Project too long !'],
     },
     group: {type: mongoose.Schema.Types.ObjectId, ref: 'Group', required: true},
     },
