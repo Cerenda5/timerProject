@@ -74,7 +74,7 @@ router.post('/', (req, res, next) => {
         });
 });
 
-router.get('/:projectsId', (req, res, next) => {
+router.get('/:projectId', (req, res, next) => {
     Project.findById(req.params.projectId)
     .select('name groupId')
     .exec()
