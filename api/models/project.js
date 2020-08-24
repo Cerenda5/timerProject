@@ -7,7 +7,9 @@ const projectSchema = mongoose.Schema({
         required: true,
         min: 3,
         max: 20
-    }},
+    },
+    group: {type: mongoose.Schema.Types.ObjectId, ref: 'Group', required: true},
+    },
     {timestamps:true}
 );
 

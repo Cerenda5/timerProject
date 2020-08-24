@@ -4,27 +4,60 @@ const mongoose = require('mongoose');
 
 const checkAuth = require('../middleware/check-auth');
 const Group = require('../models/group');
-const Project = require('../models/project');
 
 router.get('/', checkAuth ,(req, res, next) => {
     Group.find()
-    .select('name projectId user')
+    .select('name user')
     .exec()
     .then(docs => {
-        res.status(200).json({
+        const response = {
             count: docs.length,
             groups: docs.map(doc => {
                 return {
                     _id: doc._id,
-                    project: doc.project,
                     name: doc.name,
                     user: doc.user,
-                    request: {
+                    url: {
                         type: 'GET',
-                        url: 'http://localhost:3000/groups/' + doc._id
+                         url: 'http://localhost:3000/groups/' + doc._id //nom du domaine
                     }
                 }
             })
+        }
+        res.status(200).json(response)
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        })
+    });
+ });
+
+
+router.post('/',checkAuth ,(req, res, next) => {
+    const group = new Group({
+        _id: new mongoose.Types.ObjectId(),
+        name: req.body.name,
+        user: req.body.user
+    });
+    group
+    .save()
+    .then(result => {
+        console.log(result);
+        res.status(201).json({
+            message:'Group CREATED successfully !',
+            createdGroup: {
+                _id: result._id,
+                name: result.name,
+                user: result.user,
+
+                request: {
+                    type: 'GET',
+                    description: 'CREATE_GROUP',
+                    url: 'http://localhost:3000/groups/' + result._id
+                }
+            }
         });
     })
     .catch(err => {
@@ -33,66 +66,27 @@ router.get('/', checkAuth ,(req, res, next) => {
     });
 });
 
-router.post('/', checkAuth , (req, res, next) => {
-    Project.findById(req.body.projectId)
-        //Check we do have a project
-        .then(project => {
-            const group = new Group({
-                _id: mongoose.Types.ObjectId(),
-                project: req.body.projectId,
-                name: req.body.name,
-                user: req.body.user
-            });
-            if (!project) {
-                return res.status(404).json({
-                    message: 'Project not found'
-                });
-            }
-       
-            return group.save();
-        })
-        // Execute group creation
-        .then(result => {
-            console.log(result);
-            res.status(201).json({
-                message: 'Group created successfully',
-                createdGroup: {
-                    _id: result._id,
-                    project: result.project,
-                    name: result.name,
-                    user: result.user
-                },
+router.get('/:groupId',checkAuth, (req, res, next) => {
+    const id = req.params.groupId;
+    Group.findById(id)
+    .select('name user')
+
+    .exec()
+    .then(doc => {
+        console.log('From database', doc);
+        if (doc) {
+            res.status(200).json({
+                group: doc,
                 request: {
                     type: 'GET',
-                    url: 'http://localhost:3000/groups/' + result._id
+                    description: 'GET_GROUP_BY_ID',
+                    url: 'http://localhost:3000/groups/' + doc._id 
+
                 }
             });
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
-});
-
-router.get('/:groupId', checkAuth , (req, res, next) => {
-    Group.findById(req.params.groupId)
-    .select('name projectId user')
-    .exec()
-    .then(group => {
-        if (!group) {
-            return res.status(404).json({
-                message: 'Group not found'
-            })
+        } else {
+            res.status(404).json({message: 'No valid entry found for provided ID'});
         }
-        res.status(200).json({
-            group: group,
-            request: {
-                type: 'GET',
-                url: 'http://localhost:3000/groups/'
-            }
-        });
     })
     .catch(err => {
         console.log(err);
@@ -106,7 +100,7 @@ router.put('/:groupId', checkAuth , (req, res, next) => {
     const id = req.params.groupId;
     const updateOps = {};
     for (const ops of req.body) {
-        updateOps[ops.propUser] = ops.value;
+        updateOps[ops.propName] = ops.value;
     }
     Group.update({ _id: id }, {$set: updateOps})
     .exec()
@@ -127,22 +121,26 @@ router.put('/:groupId', checkAuth , (req, res, next) => {
     });
 });
 
-router.delete('/:groupId', checkAuth , (req, res, next) => {
-   Group.remove({ _id: req.params.groupId })
-   .exec()
-   .then(result => {
-    console.log(result);
-    res.status(200).json({
-        message:'Group DELETED successfully !',
-        request: {
-            type: 'POST',
-            url: 'http://localhost:3000/groups/',
-            description: 'You can create a new group with this body :',
-            body: { projectId: 'ID', name: 'String', user: 'String' }
-        },
+router.delete('/:groupId',checkAuth, (req, res, next) => {
+    const id = req.params.groupId;
+    Group.remove({ _id: id })
+    .exec()
+    .then(result => {
+        console.log(result);
+        res.status(200).json({
+            message:'Group DELETED successfully !',
+            request: {
+                type: 'POST',
+                url: 'http://localhost:3000/groups/',
+                description: 'You can create a new group with this body :',
+                body: {name: 'String', user: 'String'}
+            },
+        });
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({error: err});
     });
-})
-   .catch()
 });
 
 module.exports = router;

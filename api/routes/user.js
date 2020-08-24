@@ -51,7 +51,7 @@ router.post('/signup', (req, res, next) => {
 // Get all Users
 router.get('/', (req, res, next) => {
     User.find()
-    .select('name email')
+    .select('name email password')
     .exec()
     .then(docs => {
         const response = {
@@ -61,6 +61,7 @@ router.get('/', (req, res, next) => {
                     _id: doc._id,
                     name: doc.name,
                     email: doc.email,
+                    password: doc.password,
                     url: {
                          type: 'GET',
                          url: 'http://localhost:3000/user/' + doc._id //nom du domaine
@@ -82,7 +83,7 @@ router.get('/', (req, res, next) => {
 router.get('/:userId', (req, res, next) => {
     const id = req.params.userId;
     User.findById(id)
-    .select('name email')
+    .select('name email password')
     .exec()
     .then(doc => {
         console.log('From database', doc);
