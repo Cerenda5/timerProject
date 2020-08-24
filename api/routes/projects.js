@@ -6,7 +6,8 @@ const checkAuth = require('../middleware/check-auth');
 const Project = require('../models/project');
 const Group = require ('../models/group')
 
-router.get('/', (req, res, next) => {
+
+router.get('/', checkAuth, (req, res, next) => {
     Project.find()
     .select('name groupId')
     .exec()
@@ -34,7 +35,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     Group.findById(req.body.groupId)
         //Check we do have a group
         .then(group => {
@@ -60,6 +61,7 @@ router.post('/', (req, res, next) => {
                     group: result.group,
                     name: result.name,
                 },
+
                 request: {
                     type: 'GET',
                     url: 'http://localhost:3000/groups/' + result._id
@@ -74,7 +76,7 @@ router.post('/', (req, res, next) => {
         });
 });
 
-router.get('/:projectId', (req, res, next) => {
+router.get('/:projectId', checkAuth, (req, res, next) => {
     Project.findById(req.params.projectId)
     .select('name groupId')
     .exec()
@@ -100,7 +102,7 @@ router.get('/:projectId', (req, res, next) => {
     });
 });
 
-router.put('/:projectId', (req, res, next) => {
+router.put('/:projectId', checkAuth, (req, res, next) => {
     const id = req.params.projectId;
     const updateOps = {};
     for (const ops of req.body) {
@@ -125,9 +127,9 @@ router.put('/:projectId', (req, res, next) => {
     });
 });
 
-
-router.delete('/:projectId', (req, res, next) => {
+router.delete('/:projectId', checkAuth, (req, res, next) => {
     Project.remove({ _id: req.params.projectId })
+
     .exec()
     .then(result => {
         console.log(result);

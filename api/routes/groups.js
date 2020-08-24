@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
+const checkAuth = require('../middleware/check-auth');
 const Group = require('../models/group');
 
-router.get('/', (req, res, next) => {
+router.get('/', checkAuth ,(req, res, next) => {
     Group.find()
     .select('name user')
     .exec()
@@ -33,7 +34,8 @@ router.get('/', (req, res, next) => {
     });
  });
 
-router.post('/' ,(req, res, next) => {
+
+router.post('/',checkAuth ,(req, res, next) => {
     const group = new Group({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -49,6 +51,7 @@ router.post('/' ,(req, res, next) => {
                 _id: result._id,
                 name: result.name,
                 user: result.user,
+
                 request: {
                     type: 'GET',
                     description: 'CREATE_GROUP',
@@ -63,10 +66,11 @@ router.post('/' ,(req, res, next) => {
     });
 });
 
-router.get('/:groupId', (req, res, next) => {
+router.get('/:groupId',checkAuth, (req, res, next) => {
     const id = req.params.groupId;
     Group.findById(id)
     .select('name user')
+
     .exec()
     .then(doc => {
         console.log('From database', doc);
@@ -92,7 +96,7 @@ router.get('/:groupId', (req, res, next) => {
     });
 });
 
-router.put('/:groupId', (req, res, next) => {
+router.put('/:groupId', checkAuth , (req, res, next) => {
     const id = req.params.groupId;
     const updateOps = {};
     for (const ops of req.body) {
@@ -117,7 +121,7 @@ router.put('/:groupId', (req, res, next) => {
     });
 });
 
-router.delete('/:groupId', (req, res, next) => {
+router.delete('/:groupId',checkAuth, (req, res, next) => {
     const id = req.params.groupId;
     Group.remove({ _id: id })
     .exec()
