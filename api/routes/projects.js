@@ -1,152 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 
 const checkAuth = require('../middleware/check-auth');
-const Project = require('../models/project');
-const Group = require ('../models/group')
+const ProjectController = require ('../controllers/projects');
 
 
-router.get('/', checkAuth, (req, res, next) => {
-    Project.find()
-    .select('name groupId')
-    .exec()
-    .then(docs => {
-        res.status(200).json({
-            count: docs.length,
-            projects: docs.map(doc => {
-                return {
-                    _id: doc._id,
-                    group: doc.group,
-                    name: doc.name,
-                    request: {
-                        type: 'GET',
-                        url: 'http://localhost:3000/projects/' + doc._id
-                    }
-                }
-            })
-        });
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: err
-        });
-    });
-});
 
-router.post('/', checkAuth, (req, res, next) => {
-    Group.findById(req.body.groupId)
-        //Check we do have a group
-        .then(group => {
-            const project = new Project({
-                _id: mongoose.Types.ObjectId(),
-                group: req.body.groupId,
-                name: req.body.name,
-            });
-            if (!group) {
-                return res.status(404).json({
-                    message: 'Group not found'
-                });
-            }
-            return project.save();
-        })
-        // Execute project creation
-        .then(result => {
-            console.log(result);
-            res.status(201).json({
-                message: 'Project created successfully',
-                createdProject: {
-                    _id: result._id,
-                    group: result.group,
-                    name: result.name,
-                },
+// Get all projects
+router.get('/', checkAuth, ProjectController.projects_get_all);
 
-                request: {
-                    type: 'GET',
-                    url: 'http://localhost:3000/groups/' + result._id
-                }
-            });
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
-});
+// Create project
+router.post('/', checkAuth, ProjectController.projects_create_project);
 
-router.get('/:projectId', checkAuth, (req, res, next) => {
-    Project.findById(req.params.projectId)
-    .select('name groupId')
-    .exec()
-    .then(project => {
-        if (!project) {
-            return res.status(404).json({
-                message: 'Project not found'
-            })
-        }
-        res.status(200).json({
-            project: project,
-            request: {
-                type: 'GET',
-                url: 'http://localhost:3000/projects/' + id
-            }
-        });
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: err
-        });
-    });
-});
+// Get project by Id
+router.get('/:projectId', checkAuth, ProjectController.projects_get_project);
 
-router.put('/:projectId', checkAuth, (req, res, next) => {
-    const id = req.params.projectId;
-    const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propUser] = ops.value;
-    }
-    Group.update({ _id: id }, {$set: updateOps})
-    .exec()
-    .then(result => {
-        console.log(result);
-        res.status(200).json({
-            message:'Project UPDATED successfully !',
-            request: {
-                type: 'GET',
-                description: 'GET_Project_BY_ID',
-                url: 'http://localhost:3000/projects/' + id 
-            },
-        });
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({error: err});
-    });
-});
+// Update project by Id
+router.put('/:projectId', checkAuth, ProjectController.projects_update_project);
 
-router.delete('/:projectId', checkAuth, (req, res, next) => {
-    Project.remove({ _id: req.params.projectId })
-
-    .exec()
-    .then(result => {
-        console.log(result);
-        res.status(200).json({
-            message:'Project DELETED successfully !',
-            request: {
-                type: 'POST',
-                url: 'http://localhost:3000/projects/',
-                description: 'You can create a new project with this body :',
-                body: { groupId: 'ID', name: 'String'}
-            },
-        });
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({error: err});
-    })
-});
+// Delete project by Id
+router.delete('/:projectId', checkAuth, ProjectController.projects_delete_project);
 
 module.exports = router;
