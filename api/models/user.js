@@ -4,20 +4,20 @@ const userSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: {
         type: String,
-        required: true,
+        required: [true, , 'User name is required'],
         match: /[a-z]/,
-        min: 3,
-        max: 20
+        minlength: [3, 'User name too short !'],
+        maxlength: [20 , 'User name too long !'],
     },
     email: {
         type: String,
-        required: true,
+        required: [true, , 'Email is required'],
         unique: true,
         match: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
     },
     password: {
         type: String,
-        required: true,
+        required: [true, , 'Password is required'],
     }},
     {timestamps:true}
 );
