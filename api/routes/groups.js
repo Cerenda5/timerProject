@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
+const checkAuth = require('../middleware/check-auth');
 const Group = require('../models/group');
 const Project = require('../models/project');
-const project = require('../models/project');
 
-router.get('/', (req, res, next) => {
+router.get('/', checkAuth ,(req, res, next) => {
     Group.find()
     .select('name projectId user')
     .exec()
@@ -33,7 +33,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth , (req, res, next) => {
     Project.findById(req.body.projectId)
         //Check we do have a project
         .then(project => {
@@ -76,7 +76,7 @@ router.post('/', (req, res, next) => {
         });
 });
 
-router.get('/:groupId', (req, res, next) => {
+router.get('/:groupId', checkAuth , (req, res, next) => {
     Group.findById(req.params.groupId)
     .select('name projectId user')
     .exec()
@@ -102,7 +102,7 @@ router.get('/:groupId', (req, res, next) => {
     });
 });
 
-router.put('/:groupId', (req, res, next) => {
+router.put('/:groupId', checkAuth , (req, res, next) => {
     const id = req.params.groupId;
     const updateOps = {};
     for (const ops of req.body) {
@@ -127,7 +127,7 @@ router.put('/:groupId', (req, res, next) => {
     });
 });
 
-router.delete('/:groupId', (req, res, next) => {
+router.delete('/:groupId', checkAuth , (req, res, next) => {
    Group.remove({ _id: req.params.groupId })
    .exec()
    .then(result => {
