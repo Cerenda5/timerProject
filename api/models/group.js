@@ -8,7 +8,6 @@ const groupSchema = mongoose.Schema({
         min: 3,
         max: 20
     },
-    project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
     user: {
         type: String,
         required: true,

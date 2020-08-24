@@ -12,7 +12,7 @@ router.get('/', checkAuth ,(req, res, next) => {
     .then(docs => {
         const response = {
             count: docs.length,
-            projects: docs.map(doc => {
+            groups: docs.map(doc => {
                 return {
                     _id: doc._id,
                     name: doc.name,
