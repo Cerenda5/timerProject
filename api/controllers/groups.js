@@ -102,7 +102,6 @@ exports.groups_get_group =  (req, res, next) => {
     const id = req.params.groupId;
     Group.findById(id)
     .select('name admin users projects')
-
     .exec()
     .then(doc => {
         console.log('From database', doc);
