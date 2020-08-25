@@ -25,7 +25,6 @@ exports.groups_get_all = (req, res, next) => {
                 }
             })
         }
-        console.log("ADMIN =" + admin);
         res.status(200).json(response)
     })
     .catch(err => {
@@ -64,8 +63,6 @@ exports.groups_create_group = (req, res, next) => {
                 users: req.body.userId,
                 projects: req.body.projectId
             });
-            console.log(project);
-  
             return group.save();
         })
         // Execute group creation
