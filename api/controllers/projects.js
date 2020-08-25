@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 const Project = require('../models/project');
 const Group = require ('../models/group');
 
+// Get all Project
 exports.projects_get_all = (req, res, next) => {
     Project.find()
-    .select('name groupId')
+    .select('name group')
     .exec()
     .then(docs => {
         res.status(200).json({
@@ -30,6 +31,8 @@ exports.projects_get_all = (req, res, next) => {
     });
 };
 
+
+// Create new Project
 exports.projects_create_project = (req, res, next) => {
     Group.findById(req.body.groupId)
         //Check we do have a group
@@ -47,6 +50,8 @@ exports.projects_create_project = (req, res, next) => {
             return project.save();
         })
         // Execute project creation
+        Group.findById(req.body.groupId)
+        .exec()
         .then(result => {
             console.log(result);
             res.status(201).json({
@@ -71,6 +76,7 @@ exports.projects_create_project = (req, res, next) => {
         });
 };
 
+// Get Project by Id
 exports.projects_get_project = (req, res, next) => {
     Project.findById(req.params.projectId)
     .select('name groupId')
@@ -98,6 +104,7 @@ exports.projects_get_project = (req, res, next) => {
     });
 };
 
+// Update Project by Id
 exports.projects_update_project = (req, res, next) => {
     const id = req.params.projectId;
     const updateOps = {};
@@ -123,6 +130,7 @@ exports.projects_update_project = (req, res, next) => {
     });
 };
 
+// Delete Project by Id
 exports.projects_delete_project = (req, res, next) => {
     Project.remove({ _id: req.params.projectId })
 
