@@ -4,7 +4,7 @@ const Project = require('../models/project');
 
 exports.timers_get_all = (req, res, next) => {
     Timer.find()
-    .select('value project')
+    .select('name project')
     .exec()
     .then(docs => {
         res.status(200).json({
@@ -12,7 +12,7 @@ exports.timers_get_all = (req, res, next) => {
             timer: docs.map(doc => {
                 return {
                     _id: doc._id,
-                    value: doc.value,
+                    name: doc.name,
                     project: doc.project,
                     request: {
                         typer: 'GET',
@@ -54,11 +54,11 @@ exports.timers_create_timer = (req, res, next) => {
             createdTimer: {
                 _id: result.id,
                 project: result.project,
-                value: result.value
+                name: result.name
             },
             request: {
                 type: 'GET',
-                url: 'httpo://localhost:3000/projects/' + result._id
+                url: 'httpo://localhost:3000/timers/' + result._id
             }
         })
     })
@@ -71,8 +71,8 @@ exports.timers_create_timer = (req, res, next) => {
 }
 
 exports.timers_get_timer = (req, res, next) => {
-    Timer.findById(req.params.projectId)
-    .select('value projectId')
+    Timer.findById(req.params.timerId)
+    .select('name projectId')
     .exec()
     .then (timer => {
         if (!timer) {
@@ -123,7 +123,7 @@ exports.timers_update_timer = (req, res, next) => {
     })
 }
 
-exports.projects_delete_project = (req, res, next) => {
+exports.timers_delete_timer = (req, res, next) => {
     Timer.remove({_id: req.params.timerId})
     .exec()
     .then (result => {
@@ -133,11 +133,12 @@ exports.projects_delete_project = (req, res, next) => {
             request: {
                 type: 'POST',
                 url: 'http://localhost:3000/timers/',
-                body: {projectId: 'ID', value: 'Number'
+                body: {projectId: 'ID', name: 'String'
                 }
             }
         })
         .catch(err);
+        console.log(err);
         res.status(500).json({
             error:err
         })

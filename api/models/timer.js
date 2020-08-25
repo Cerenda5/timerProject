@@ -8,6 +8,7 @@ const timerSchema = mongoose.Schema({
         min: 0,
         default: 0
     },
+    project: {type: mongoose.Schema.Types.ObjectId, ref:'Project', required: true}
     },
     {timestamps:true}
 );

@@ -10,7 +10,7 @@ const projectSchema = mongoose.Schema({
         maxlength: [20 , 'Project too long !'],
     },
     group: {type: mongoose.Schema.Types.ObjectId, ref: 'Group', required: true},
-    timer: {type: mongoose.Schema.Types.ObjectId, ref: 'Timer'}
+    timer: {type: mongoose.Schema.Types.ObjectId, ref: 'Timer', required: true}
     },
     {timestamps:true}
 );

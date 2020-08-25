@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 const Project = require('../models/project');
 const Group = require ('../models/group');
+const Timer = require('../models/timer');
 
 // Get all Project
 exports.projects_get_all = (req, res, next) => {
     Project.find()
-    .select('name group')
+    .select('name group timer')
     .exec()
     .then(docs => {
         res.status(200).json({
@@ -15,6 +16,7 @@ exports.projects_get_all = (req, res, next) => {
                     _id: doc._id,
                     group: doc.group,
                     name: doc.name,
+                    timer: doc.timer,
                     request: {
                         type: 'GET',
                         url: 'http://localhost:3000/projects/' + doc._id
@@ -79,7 +81,7 @@ exports.projects_create_project = (req, res, next) => {
 // Get Project by Id
 exports.projects_get_project = (req, res, next) => {
     Project.findById(req.params.projectId)
-    .select('name groupId')
+    .select('name groupId timerId value')
     .exec()
     .then(project => {
         if (!project) {

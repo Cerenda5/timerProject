@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const projectRoutes = require('./routes/projects');
 const groupRoutes = require('./routes/groups');
 const userRoutes = require('./routes/users');
+const timerRoutes = require('./routes/timers');
 
 // Connect to DB
 mongoose.connect(
@@ -44,6 +45,7 @@ app.use((req, res, next) => {
 app.use('/projects', projectRoutes);
 app.use('/groups', groupRoutes);
 app.use('/users', userRoutes);
+app.use('/timers', timerRoutes);
 
 // Not find Error
 app.use((req, res, next) => {
