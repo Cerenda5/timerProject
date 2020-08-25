@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 const Group = require('../models/group');
+const User = require('../models/user');
+const Project = require('../models/project');
 
+// Get all Groups
 exports.groups_get_all = (req, res, next) => {
     Group.find()
-    .select('name user')
+    .select('name  admin users projects')
     .exec()
     .then(docs => {
         const response = {
@@ -12,7 +15,9 @@ exports.groups_get_all = (req, res, next) => {
                 return {
                     _id: doc._id,
                     name: doc.name,
-                    user: doc.user,
+                    admin: doc.admin,
+                    users: doc.users,
+                    projects: doc.projects,
                     url: {
                         type: 'GET',
                          url: 'http://localhost:3000/groups/' + doc._id //nom du domaine
@@ -20,6 +25,7 @@ exports.groups_get_all = (req, res, next) => {
                 }
             })
         }
+        console.log("ADMIN =" + admin);
         res.status(200).json(response)
     })
     .catch(err => {
@@ -30,41 +36,72 @@ exports.groups_get_all = (req, res, next) => {
     });
 };
 
+// Create new Group
 exports.groups_create_group = (req, res, next) => {
-    const group = new Group({
-        _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        user: req.body.user
-    });
-    group
-    .save()
-    .then(result => {
-        console.log(result);
-        res.status(201).json({
-            message:'Group CREATED successfully !',
-            createdGroup: {
-                _id: result._id,
-                name: result.name,
-                user: result.user,
-
-                request: {
-                    type: 'GET',
-                    description: 'CREATE_GROUP',
-                    url: 'http://localhost:3000/groups/' + result._id
-                }
+    User.findById(req.body.userId)
+        //Check we do have users
+        .then(user => {
+            const group = new Group({
+                _id: new mongoose.Types.ObjectId(),
+                name: req.body.name,
+                admin: req.body.admin,
+                users: req.body.userId,
+                projects: req.body.projetId
+            });
+            if (!user) {
+                return res.status(404).json({
+                    message: 'Users not found'
+                });
             }
+            return group.save();
+        })
+        Project.findById(req.body.projectId)
+        .then(project => {
+            const group = new Group({
+                _id: new mongoose.Types.ObjectId(),
+                name: req.body.name,
+                admin: req.body.admin,
+                users: req.body.userId,
+                projects: req.body.projectId
+            });
+            console.log(project);
+  
+            return group.save();
+        })
+        // Execute group creation
+        .then(result => {
+            console.log(result);
+            res.status(201).json({
+                message:'Group CREATED successfully !',
+                createdGroup: {
+                    _id: result._id,
+                    name: result.name,
+                    admin: result.admin,
+                    users: result.users,
+                    projects: result.projects,
+    
+                    request: {
+                        type: 'GET',
+                        description: 'CREATE_GROUP',
+                        url: 'http://localhost:3000/groups/' + result._id
+                    }
+                }
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
         });
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({error: err});
-    });
 };
 
+
+// Get Group by Id
 exports.groups_get_group =  (req, res, next) => {
     const id = req.params.groupId;
     Group.findById(id)
-    .select('name user')
+    .select('name admin users projects')
 
     .exec()
     .then(doc => {
@@ -91,6 +128,7 @@ exports.groups_get_group =  (req, res, next) => {
     });
 };
 
+// Update Group by Id
 exports.groups_update_group = (req, res, next) => {
     const id = req.params.groupId;
     const updateOps = {};
@@ -116,6 +154,7 @@ exports.groups_update_group = (req, res, next) => {
     });
 };
 
+// Delete Group by Id
 exports.groups_delete_group =  (req, res, next) => {
     const id = req.params.groupId;
     Group.remove({ _id: id })
