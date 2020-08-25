@@ -9,7 +9,15 @@ const projectSchema = mongoose.Schema({
         minlength: [3, 'Project name too short !'],
         maxlength: [20 , 'Project too long !'],
     },
-    group: {type: mongoose.Schema.Types.ObjectId, ref: 'Group', required: true},
+    admin: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        require: "Admin is required"
+    },
+    group: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Group', 
+        required: true},
     },
     {timestamps:true}
 );
