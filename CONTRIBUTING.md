@@ -11,5 +11,5 @@ git commit -m "Description of what change"
 ## Coding Conventions 
 
 - Use tabs at new lines
-- Return the line after a {...}
+- Return the line after a `{` and before `}`
 - This is open source. Consider the people who will read your code, and make it look nice for them.
