@@ -8,10 +8,15 @@ const groupSchema = mongoose.Schema({
         match: /[a-z]/,
         minlength: [3, 'Group name too long !'],
     },
+    admin: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        require: "Admin is required"
+    },
     users:  [{
-          type: mongoose.Types.ObjectId,
-          ref: 'User',
-          require: "Users is required"
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        require: "Users is required"
     }],
     projects: [{
         type: mongoose.Types.ObjectId,

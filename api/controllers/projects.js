@@ -6,7 +6,7 @@ const Timer = require('../models/timer');
 // Get all Project
 exports.projects_get_all = (req, res, next) => {
     Project.find()
-    .select('name group timer')
+    .select('name admin group timer')
     .exec()
     .then(docs => {
         res.status(200).json({
@@ -17,6 +17,7 @@ exports.projects_get_all = (req, res, next) => {
                     group: doc.group,
                     name: doc.name,
                     timer: doc.timer,
+                    admin: doc.admin,
                     request: {
                         type: 'GET',
                         url: 'http://localhost:3000/projects/' + doc._id
@@ -44,12 +45,14 @@ exports.projects_create_project = (req, res, next) => {
                 group: req.body.groupId,
                 name: req.body.name,
                 timer: req.body.timerId
+                admin: req.body.admin
             });
             if (!group) {
                 return res.status(404).json({
                     message: 'Group not found'
                 });
             }
+        
             return project.save();
       
         })
@@ -63,7 +66,8 @@ exports.projects_create_project = (req, res, next) => {
                     group: result.group,
                     name: result.name,
                     timer: result.timerId,
-
+                    admin: req.body.admin
+                },
                 request: {
                     type: 'GET',
                     url: 'http://localhost:3000/groups/' + result._id

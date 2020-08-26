@@ -19,6 +19,10 @@ const projectSchema = mongoose.Schema({
         ref: 'Timer', 
         require: "Timer is required"
     }
+    admin: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        require: "Admin is required"
     },
     {timestamps:true}
 );

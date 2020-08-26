@@ -6,7 +6,7 @@ const Project = require('../models/project');
 // Get all Groups
 exports.groups_get_all = (req, res, next) => {
     Group.find()
-    .select('name users projects')
+    .select('name  admin users projects')
     .exec()
     .then(docs => {
         const response = {
@@ -15,6 +15,7 @@ exports.groups_get_all = (req, res, next) => {
                 return {
                     _id: doc._id,
                     name: doc.name,
+                    admin: doc.admin,
                     users: doc.users,
                     projects: doc.projects,
                     url: {
@@ -42,10 +43,10 @@ exports.groups_create_group = (req, res, next) => {
             const group = new Group({
                 _id: new mongoose.Types.ObjectId(),
                 name: req.body.name,
+                admin: req.body.admin,
                 users: req.body.userId,
                 projects: req.body.projetId
             });
-            console.log(user);
             if (!user) {
                 return res.status(404).json({
                     message: 'Users not found'
@@ -58,11 +59,10 @@ exports.groups_create_group = (req, res, next) => {
             const group = new Group({
                 _id: new mongoose.Types.ObjectId(),
                 name: req.body.name,
+                admin: req.body.admin,
                 users: req.body.userId,
                 projects: req.body.projectId
             });
-            console.log(project);
-  
             return group.save();
         })
         // Execute group creation
@@ -73,6 +73,7 @@ exports.groups_create_group = (req, res, next) => {
                 createdGroup: {
                     _id: result._id,
                     name: result.name,
+                    admin: result.admin,
                     users: result.users,
                     projects: result.projects,
     
@@ -97,8 +98,7 @@ exports.groups_create_group = (req, res, next) => {
 exports.groups_get_group =  (req, res, next) => {
     const id = req.params.groupId;
     Group.findById(id)
-    .select('name users projects')
-
+    .select('name admin users projects')
     .exec()
     .then(doc => {
         console.log('From database', doc);
