@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 const Project = require('../models/project');
 const Group = require ('../models/group');
+const Timer = require('../models/timer');
 
 // Get all Project
 exports.projects_get_all = (req, res, next) => {
     Project.find()
-    .select('name admin group')
+    .select('name admin group timer')
     .exec()
     .then(docs => {
         res.status(200).json({
@@ -15,6 +16,7 @@ exports.projects_get_all = (req, res, next) => {
                     _id: doc._id,
                     group: doc.group,
                     name: doc.name,
+                    timer: doc.timer,
                     admin: doc.admin,
                     request: {
                         type: 'GET',
@@ -42,6 +44,7 @@ exports.projects_create_project = (req, res, next) => {
                 _id: mongoose.Types.ObjectId(),
                 group: req.body.groupId,
                 name: req.body.name,
+                timer: req.body.timerId
                 admin: req.body.admin
             });
             if (!group) {
@@ -51,6 +54,7 @@ exports.projects_create_project = (req, res, next) => {
             }
         
             return project.save();
+      
         })
         // Execute project creation
         .then(result => {
@@ -61,13 +65,14 @@ exports.projects_create_project = (req, res, next) => {
                     _id: result._id,
                     group: result.group,
                     name: result.name,
+                    timer: result.timerId,
                     admin: req.body.admin
                 },
-
                 request: {
                     type: 'GET',
                     url: 'http://localhost:3000/groups/' + result._id
                 }
+            }
             });
         })
         .catch(err => {
@@ -80,8 +85,10 @@ exports.projects_create_project = (req, res, next) => {
 
 // Get Project by Id
 exports.projects_get_project = (req, res, next) => {
-    Project.findById(req.params.projectId)
-    .select('name groupId')
+    const id = req.params.projectId;
+    Project.findById(id)
+   // Project.findById(req.params.projectId)
+    .select('name groupId timer')
     .exec()
     .then(project => {
         if (!project) {
@@ -111,9 +118,9 @@ exports.projects_update_project = (req, res, next) => {
     const id = req.params.projectId;
     const updateOps = {};
     for (const ops of req.body) {
-        updateOps[ops.propUser] = ops.value;
+        updateOps[ops.propName] = ops.value;
     }
-    Group.update({ _id: id }, {$set: updateOps})
+    Project.update({ _id: id }, {$set: updateOps})
     .exec()
     .then(result => {
         console.log(result);
