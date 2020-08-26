@@ -17,7 +17,7 @@ exports.projects_get_all = (req, res, next) => {
                     name: doc.name,
                     group: doc.group,
                     admin: doc.admin,
-                    timer: doc.timer,
+                    timer: doc.timerId,
                     request: {
                         type: 'GET',
                         url: 'http://localhost:3000/projects/' + doc._id
@@ -114,11 +114,7 @@ exports.projects_get_project = (req, res, next) => {
 // Update Project by Id
 exports.projects_update_project = (req, res, next) => {
     const id = req.params.projectId;
-    const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.prop] = ops.value;
-    }
-    Project.update({ _id: id }, {$set: updateOps})
+    Project.update({ _id: id }, {$set: req.body})
     .exec()
     .then(result => {
         console.log(result);

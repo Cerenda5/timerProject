@@ -13,6 +13,7 @@ exports.timers_get_all = (req, res, next) => {
                     _id: doc._id,
                     name: doc.name,
                     project: doc.project,
+                    value: doc.value,
                     request: {
                         typer: 'GET',
                         url: 'http://localhost:3000/timers/' + doc._id
@@ -51,7 +52,9 @@ exports.timers_create_timer = (req, res, next) => {
             message: 'Timer created succesfully',
             createdTimer: {
                 _id: result.id,
-                project: result.project
+                project: result.project,
+                name: result.name,
+                value: result.value
             },
             request: {
                 type: 'GET',
@@ -95,11 +98,7 @@ exports.timers_get_timer = (req, res, next) => {
 
 exports.timers_update_timer = (req, res, next) => {
     const id = req.params.timerId;
-    const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.prop] = ops.value;
-    }
-    Project.update({_id: id}, {$set: updateOps})
+    Timer.update({_id: id}, {$set: req.body})
     .exec()
     .then(result => {
         console.log(result);
