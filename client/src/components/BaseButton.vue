@@ -29,7 +29,7 @@ export default {
   background-color: var(--medium-blue);
 }
 
-.button .router-link-active div {
+.button .router-link-exact-active div {
   background-color: var(--clear-blue);
 }
 

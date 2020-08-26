@@ -1,7 +1,11 @@
 <template>
 <div id="side-menu">
-  <base-button link="/test" content="Home"></base-button>
-  <base-button link="/teams" content="Teams"></base-button>
+  <div v-if="this.$store.state.userId" class="profile">
+    <div class="profile-picture"></div>
+    <div class="profile-name">{{ userName }}</div>
+  </div>
+  <base-button link="/" content="Home"></base-button>
+  <base-button link="/groups" content="Groups"></base-button>
   <base-button link="/projects" content="Projects"></base-button>
 </div>
 </template>
@@ -13,6 +17,19 @@ export default {
   name: 'TheSideMenu',
   components: {
     BaseButton
+  },
+  data() {
+    return {
+      userName: ""
+    }
+  },
+  mounted() {
+    if (!this.$store.state.userId) return
+
+    this.$http
+      .get('users/' + this.$store.state.userId)
+      .then(response => (this.userName = response.data.user.name))
+      .catch(error => { console.log(error) })
   }
 }
 </script>
@@ -30,7 +47,7 @@ export default {
   margin-bottom: 10px;
 }
 
-a {
+#side-menu a {
   color: var(--white);
 }
 </style>

@@ -1,9 +1,11 @@
 <template>
   <div id="PageHome" class="page">
     <h1>Liste des utilisateurs</h1>
-    <p>Nombre d'utilisateurs : {{ users.length }}</p>
-    <div v-for="user in users" :key="user.id">
-      <router-link :to="'/user/' + user.id">{{ user.id }}</router-link> - {{ user.firstName }} - {{ user.lastName }} - {{ user.email }} - {{ user.phoneNumber }} - {{ user.tag }}
+    <p>is connect : <span v-if="this.$store.state.userId">yes</span><span v-else>no</span></p>
+    <p v-if="this.$store.state.userId ">userid : {{ this.$store.state.userId }}</p>
+    <p>Nombre d'utilisateurs : {{ users.count }}</p>
+    <div v-for="user in users.users" :key="user.id">
+      <router-link :to="'/user/' + user._id">{{ user._id }}</router-link> - {{ user.name }} - {{ user.email }}
     </div>
   </div>
 </template>
@@ -18,7 +20,7 @@ export default {
   },
   mounted () {
     this.$http
-      .get('users')
+      .get('users/')
       .then(response => (this.users = response.data))
       .catch(error => console.log(error))
   }

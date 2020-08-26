@@ -37,6 +37,10 @@ body {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 #app {
   width: 100vw;
   height: 100vh;
@@ -55,5 +59,12 @@ body {
 
 .page {
   padding: 20px;
+}
+
+.error {
+  color: var(--white);
+  background-color: #FF534C;
+  padding: 20px;
+  border-radius: 7px;
 }
 </style>
