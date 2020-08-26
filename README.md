@@ -1,4 +1,4 @@
-Hey everyone and welcome on our timerProject.
+Hello everyone and welcome on our timerProject.
 This projet as been made by a group of three students in third year of web development for their final exam.
 The point is to make a website where people can sign In and can create group then add project with a timer to know the time spent on a project.
 This project use Docker for the front and the back so you must have it to make it work.
@@ -28,3 +28,4 @@ docker run -it -p 8080:80 --rm dockerizevue
 ```
 docker-compose exec node npm test
 ```
+
