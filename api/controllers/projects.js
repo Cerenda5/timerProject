@@ -116,7 +116,7 @@ exports.projects_update_project = (req, res, next) => {
     const id = req.params.projectId;
     const updateOps = {};
     for (const ops of req.body) {
-        updateOps[ops.prop] = ops.value;
+        updateOps[ops.propUser] = ops.value;
     }
     Project.update({ _id: id }, {$set: updateOps})
     .exec()
