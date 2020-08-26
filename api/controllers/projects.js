@@ -51,10 +51,9 @@ exports.projects_create_project = (req, res, next) => {
                 });
             }
             return project.save();
+      
         })
         // Execute project creation
-        Group.findById(req.body.groupId)
-        .exec()
         .then(result => {
             console.log(result);
             res.status(201).json({
@@ -82,8 +81,10 @@ exports.projects_create_project = (req, res, next) => {
 
 // Get Project by Id
 exports.projects_get_project = (req, res, next) => {
-    Project.findById(req.params.projectId)
-    .select('name groupId timeriD')
+    const id = req.params.projectId;
+    Project.findById(id)
+   // Project.findById(req.params.projectId)
+    .select('name groupId timer')
     .exec()
     .then(project => {
         if (!project) {
@@ -113,9 +114,9 @@ exports.projects_update_project = (req, res, next) => {
     const id = req.params.projectId;
     const updateOps = {};
     for (const ops of req.body) {
-        updateOps[ops.propUser] = ops.value;
+        updateOps[ops.propName] = ops.value;
     }
-    Group.update({ _id: id }, {$set: updateOps})
+    Project.update({ _id: id }, {$set: updateOps})
     .exec()
     .then(result => {
         console.log(result);

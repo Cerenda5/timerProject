@@ -9,8 +9,16 @@ const projectSchema = mongoose.Schema({
         minlength: [3, 'Project name too short !'],
         maxlength: [20 , 'Project too long !'],
     },
-    group: {type: mongoose.Schema.Types.ObjectId, ref: 'Group', required: true},
-    timer: {type: mongoose.Schema.Types.ObjectId, ref: 'Timer', required: true}
+    group: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Group', 
+        required: true
+    },
+    timer: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Timer', 
+        require: "Timer is required"
+    }
     },
     {timestamps:true}
 );
