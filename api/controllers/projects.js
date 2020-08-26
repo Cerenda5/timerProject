@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 const Project = require('../models/project');
 const Group = require ('../models/group');
+const Timer = require('../models/timer');
 
+// Get all Project
 exports.projects_get_all = (req, res, next) => {
     Project.find()
-    .select('name groupId')
+    .select('name admin group timer')
     .exec()
     .then(docs => {
         res.status(200).json({
@@ -12,8 +14,10 @@ exports.projects_get_all = (req, res, next) => {
             projects: docs.map(doc => {
                 return {
                     _id: doc._id,
-                    group: doc.group,
                     name: doc.name,
+                    group: doc.group,
+                    admin: doc.admin,
+                    timer: doc.timer,
                     request: {
                         type: 'GET',
                         url: 'http://localhost:3000/projects/' + doc._id
@@ -30,21 +34,27 @@ exports.projects_get_all = (req, res, next) => {
     });
 };
 
+
+// Create new Project
 exports.projects_create_project = (req, res, next) => {
     Group.findById(req.body.groupId)
         //Check we do have a group
         .then(group => {
             const project = new Project({
                 _id: mongoose.Types.ObjectId(),
-                group: req.body.groupId,
                 name: req.body.name,
+                group: req.body.groupId,
+                admin: req.body.admin,
+                timer: req.body.timerId
             });
             if (!group) {
                 return res.status(404).json({
                     message: 'Group not found'
                 });
             }
+        
             return project.save();
+      
         })
         // Execute project creation
         .then(result => {
@@ -53,10 +63,11 @@ exports.projects_create_project = (req, res, next) => {
                 message: 'Project created successfully',
                 createdProject: {
                     _id: result._id,
-                    group: result.group,
                     name: result.name,
+                    group: result.group,
+                    admin: req.body.admin,
+                    timer: result.timerId
                 },
-
                 request: {
                     type: 'GET',
                     url: 'http://localhost:3000/groups/' + result._id
@@ -71,9 +82,10 @@ exports.projects_create_project = (req, res, next) => {
         });
 };
 
+// Get Project by Id
 exports.projects_get_project = (req, res, next) => {
-    Project.findById(req.params.projectId)
-    .select('name groupId')
+    const id = req.params.projectId;
+    Project.findById(id)
     .exec()
     .then(project => {
         if (!project) {
@@ -98,21 +110,23 @@ exports.projects_get_project = (req, res, next) => {
     });
 };
 
+
+// Update Project by Id
 exports.projects_update_project = (req, res, next) => {
     const id = req.params.projectId;
     const updateOps = {};
     for (const ops of req.body) {
-        updateOps[ops.propUser] = ops.value;
+        updateOps[ops.prop] = ops.value;
     }
-    Group.update({ _id: id }, {$set: updateOps})
+    Project.update({ _id: id }, {$set: updateOps})
     .exec()
     .then(result => {
         console.log(result);
         res.status(200).json({
             message:'Project UPDATED successfully !',
             request: {
-                type: 'GET',
-                description: 'GET_Project_BY_ID',
+                type: 'PUT',
+                description: 'PUT_Project_BY_ID',
                 url: 'http://localhost:3000/projects/' + id 
             },
         });
@@ -123,6 +137,7 @@ exports.projects_update_project = (req, res, next) => {
     });
 };
 
+// Delete Project by Id
 exports.projects_delete_project = (req, res, next) => {
     Project.remove({ _id: req.params.projectId })
 
