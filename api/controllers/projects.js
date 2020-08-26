@@ -43,6 +43,7 @@ exports.projects_create_project = (req, res, next) => {
                 _id: mongoose.Types.ObjectId(),
                 group: req.body.groupId,
                 name: req.body.name,
+                timer: req.body.timerId
             });
             if (!group) {
                 return res.status(404).json({
@@ -62,12 +63,13 @@ exports.projects_create_project = (req, res, next) => {
                     _id: result._id,
                     group: result.group,
                     name: result.name,
-                },
+                    timer: result.timerId,
 
                 request: {
                     type: 'GET',
                     url: 'http://localhost:3000/groups/' + result._id
                 }
+            }
             });
         })
         .catch(err => {
@@ -81,7 +83,7 @@ exports.projects_create_project = (req, res, next) => {
 // Get Project by Id
 exports.projects_get_project = (req, res, next) => {
     Project.findById(req.params.projectId)
-    .select('name groupId timerId value')
+    .select('name groupId timeriD')
     .exec()
     .then(project => {
         if (!project) {
