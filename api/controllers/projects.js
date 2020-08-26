@@ -44,7 +44,7 @@ exports.projects_create_project = (req, res, next) => {
                 _id: mongoose.Types.ObjectId(),
                 group: req.body.groupId,
                 name: req.body.name,
-                timer: req.body.timerId
+                timer: req.body.timerId,
                 admin: req.body.admin
             });
             if (!group) {
@@ -54,7 +54,6 @@ exports.projects_create_project = (req, res, next) => {
             }
         
             return project.save();
-      
         })
         // Execute project creation
         .then(result => {
@@ -72,8 +71,7 @@ exports.projects_create_project = (req, res, next) => {
                     type: 'GET',
                     url: 'http://localhost:3000/groups/' + result._id
                 }
-            }
-            });
+            })
         })
         .catch(err => {
             console.log(err);
@@ -116,11 +114,7 @@ exports.projects_get_project = (req, res, next) => {
 // Update Project by Id
 exports.projects_update_project = (req, res, next) => {
     const id = req.params.projectId;
-    const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
-    }
-    Project.update({ _id: id }, {$set: updateOps})
+    Project.update({ _id: id }, {$set: req.body})
     .exec()
     .then(result => {
         console.log(result);
@@ -135,7 +129,9 @@ exports.projects_update_project = (req, res, next) => {
     })
     .catch(err => {
         console.log(err);
-        res.status(500).json({error: err});
+        res.status(500).json({
+            error: err
+        });
     });
 };
 
