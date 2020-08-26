@@ -1,0 +1,28 @@
+version: '3.6'
+services:
+  node:
+    container_name: timer-project
+    image: 'node:latest'
+    working_dir: /home/node/app
+    command:
+      - /bin/sh
+      - '-c'
+      - 'npm install && npm start'
+    ports:
+      - '3000:3000'
+    volumes:
+      - './api:/home/node/app'
+    networks:
+      - API
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    networks:
+      - API
+
+networks: 
+  API: 
+    driver: bridge
+    
+    
