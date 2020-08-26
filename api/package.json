@@ -2,11 +2,11 @@
   "name": "timer-project",
   "version": "1.0.0",
   "description": "TimerProject",
-  "main": "server.js",
   "scripts": {
-    "start": "nodemon -L server.js",
+    "start": "nodemon server.js",
     "test": "mocha --recursive --timeout 120000"
   },
+  "main": "api/app.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Cerenda5/timerProject.git"
