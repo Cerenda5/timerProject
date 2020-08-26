@@ -9,6 +9,11 @@ const projectSchema = mongoose.Schema({
         minlength: [3, 'Project name too short !'],
         maxlength: [20 , 'Project too long !'],
     },
+    admin: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        require: "Admin is required"
+    },
     group: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Group', 
@@ -19,10 +24,6 @@ const projectSchema = mongoose.Schema({
         ref: 'Timer', 
         require: "Timer is required"
     }
-    admin: {
-        type: mongoose.Types.ObjectId,
-        ref: 'User',
-        require: "Admin is required"
     },
     {timestamps:true}
 );

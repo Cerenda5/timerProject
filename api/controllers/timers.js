@@ -4,7 +4,6 @@ const Project = require('../models/project');
 
 exports.timers_get_all = (req, res, next) => {
     Timer.find()
-    .select('name project')
     .exec()
     .then(docs => {
         res.status(200).json({
@@ -36,8 +35,7 @@ exports.timers_create_timer = (req, res, next) => {
     .then(project => {
         const timer = new Timer({
             _id: mongoose.Types.ObjectId(),
-            project: req.body.projectId,
-            name: req.body.name
+            project: req.body.projectId
         })
         if (!project) {
             return res.status(404).json({
@@ -53,8 +51,7 @@ exports.timers_create_timer = (req, res, next) => {
             message: 'Timer created succesfully',
             createdTimer: {
                 _id: result.id,
-                project: result.project,
-                name: result.name
+                project: result.project
             },
             request: {
                 type: 'GET',
@@ -72,7 +69,6 @@ exports.timers_create_timer = (req, res, next) => {
 
 exports.timers_get_timer = (req, res, next) => {
     Timer.findById(req.params.timerId)
-    .select('name projectId')
     .exec()
     .then (timer => {
         if (!timer) {
@@ -84,6 +80,7 @@ exports.timers_get_timer = (req, res, next) => {
             timer: timer,
             request: {
                 type: 'GET',
+                description: 'GET_Timer_BY_ID',
                 url: 'http://localhost:3000/timers/' + timer._id
             }
         })
@@ -100,7 +97,7 @@ exports.timers_update_timer = (req, res, next) => {
     const id = req.params.timerId;
     const updateOps = {};
     for (const ops of req.body) {
-        updateOps[ontimeupdate.propUser] = ops.value
+        updateOps[ops.prop] = ops.value;
     }
     Project.update({_id: id}, {$set: updateOps})
     .exec()
@@ -109,8 +106,8 @@ exports.timers_update_timer = (req, res, next) => {
         res.status(200).json({
             message:'Timer UPDATED successfully !',
             request: {
-                type: 'GET',
-                description: 'GET_Timer_BY_ID',
+                type: 'PUT',
+                description: 'PUT_Timer_BY_ID',
                 url: 'http://localhost:3000/timers/' + id
             }
         })
@@ -133,8 +130,7 @@ exports.timers_delete_timer = (req, res, next) => {
             request: {
                 type: 'POST',
                 url: 'http://localhost:3000/timers/',
-                body: {projectId: 'ID', name: 'String'
-                }
+                body: {projectId: 'ID'}
             }
         })
         .catch(err);

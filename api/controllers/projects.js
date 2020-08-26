@@ -14,10 +14,10 @@ exports.projects_get_all = (req, res, next) => {
             projects: docs.map(doc => {
                 return {
                     _id: doc._id,
-                    group: doc.group,
                     name: doc.name,
-                    timer: doc.timer,
+                    group: doc.group,
                     admin: doc.admin,
+                    timer: doc.timer,
                     request: {
                         type: 'GET',
                         url: 'http://localhost:3000/projects/' + doc._id
@@ -42,10 +42,10 @@ exports.projects_create_project = (req, res, next) => {
         .then(group => {
             const project = new Project({
                 _id: mongoose.Types.ObjectId(),
-                group: req.body.groupId,
                 name: req.body.name,
+                group: req.body.groupId,
+                admin: req.body.admin,
                 timer: req.body.timerId
-                admin: req.body.admin
             });
             if (!group) {
                 return res.status(404).json({
@@ -63,16 +63,15 @@ exports.projects_create_project = (req, res, next) => {
                 message: 'Project created successfully',
                 createdProject: {
                     _id: result._id,
-                    group: result.group,
                     name: result.name,
-                    timer: result.timerId,
-                    admin: req.body.admin
+                    group: result.group,
+                    admin: req.body.admin,
+                    timer: result.timerId
                 },
                 request: {
                     type: 'GET',
                     url: 'http://localhost:3000/groups/' + result._id
                 }
-            }
             });
         })
         .catch(err => {
@@ -87,8 +86,6 @@ exports.projects_create_project = (req, res, next) => {
 exports.projects_get_project = (req, res, next) => {
     const id = req.params.projectId;
     Project.findById(id)
-   // Project.findById(req.params.projectId)
-    .select('name groupId timer')
     .exec()
     .then(project => {
         if (!project) {
@@ -113,12 +110,13 @@ exports.projects_get_project = (req, res, next) => {
     });
 };
 
+
 // Update Project by Id
 exports.projects_update_project = (req, res, next) => {
     const id = req.params.projectId;
     const updateOps = {};
     for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
+        updateOps[ops.prop] = ops.value;
     }
     Project.update({ _id: id }, {$set: updateOps})
     .exec()
@@ -127,8 +125,8 @@ exports.projects_update_project = (req, res, next) => {
         res.status(200).json({
             message:'Project UPDATED successfully !',
             request: {
-                type: 'GET',
-                description: 'GET_Project_BY_ID',
+                type: 'PUT',
+                description: 'PUT_Project_BY_ID',
                 url: 'http://localhost:3000/projects/' + id 
             },
         });

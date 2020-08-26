@@ -6,7 +6,7 @@ const Project = require('../models/project');
 // Get all Groups
 exports.groups_get_all = (req, res, next) => {
     Group.find()
-    .select('name  admin users projects')
+    .select('name admin users projects')
     .exec()
     .then(docs => {
         const response = {
@@ -54,17 +54,6 @@ exports.groups_create_group = (req, res, next) => {
             }
             return group.save();
         })
-        Project.findById(req.body.projectId)
-        .then(project => {
-            const group = new Group({
-                _id: new mongoose.Types.ObjectId(),
-                name: req.body.name,
-                admin: req.body.admin,
-                users: req.body.userId,
-                projects: req.body.projectId
-            });
-            return group.save();
-        })
         // Execute group creation
         .then(result => {
             console.log(result);
@@ -78,7 +67,7 @@ exports.groups_create_group = (req, res, next) => {
                     projects: result.projects,
     
                     request: {
-                        type: 'GET',
+                        type: 'POST',
                         description: 'CREATE_GROUP',
                         url: 'http://localhost:3000/groups/' + result._id
                     }
@@ -129,7 +118,7 @@ exports.groups_update_group = (req, res, next) => {
     const id = req.params.groupId;
     const updateOps = {};
     for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
+        updateOps[ops.prop] = ops.value;
     }
     Group.update({ _id: id }, {$set: updateOps})
     .exec()
@@ -138,8 +127,8 @@ exports.groups_update_group = (req, res, next) => {
         res.status(200).json({
             message:'Group UPDATED successfully !',
             request: {
-                type: 'GET',
-                description: 'GET_GROUP_BY_ID',
+                type: 'PUT',
+                description: 'PUT_GROUP_BY_ID',
                 url: 'http://localhost:3000/groups/' + id 
             },
         });
@@ -160,7 +149,7 @@ exports.groups_delete_group =  (req, res, next) => {
         res.status(200).json({
             message:'Group DELETED successfully !',
             request: {
-                type: 'POST',
+                type: 'DELETE',
                 url: 'http://localhost:3000/groups/',
                 description: 'You can create a new group with this body :',
                 body: {name: 'String', user: 'String'}

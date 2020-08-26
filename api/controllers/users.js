@@ -75,6 +75,7 @@ exports.users_login = (req, res, next) => {
                 );
                 return res.status(200).json({
                     message: 'Auth successful',
+                    id: user[0]._id,
                     token: token
                 });
             }
@@ -84,7 +85,7 @@ exports.users_login = (req, res, next) => {
         })
     })
     .catch(err => {
-        console/log(err);
+        console.log(err);
         res.status(500).json({
             error: err
         });
@@ -106,7 +107,7 @@ exports.users_get_all = (req, res, next) => {
                     password: doc.password,
                     url: {
                          type: 'GET',
-                         url: 'http://localhost:3000/user/' + doc._id //nom du domaine
+                         url: 'http://localhost:3000/users/' + doc._id //nom du domaine
                     }
                 }
             })
@@ -134,7 +135,7 @@ exports.users_get_all = (req, res, next) => {
                 request: {
                     type: 'GET',
                     description: 'GET_USER_BY_ID',
-                    url: 'http://localhost:3000/user/' + doc._id 
+                    url: 'http://localhost:3000/users/' + doc._id 
 
                 }
             });
@@ -160,8 +161,8 @@ exports.users_update_user = (req, res, next) => {
         res.status(200).json({
             message:'User UPDATED successfully !',
             request: {
-                type: 'GET',
-                description: 'GET_User_BY_ID',
+                type: 'PUT',
+                description: 'PUT_User_BY_ID',
                 url: 'http://localhost:3000/users/' + id 
             },
         });
