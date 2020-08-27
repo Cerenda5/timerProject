@@ -2,7 +2,7 @@
 <div id="side-menu">
   <div class="profile">
     <div class="profile-picture"></div>
-    <p class="profile-name">{{ userName }}</p>
+    <p class="profile-name"><router-link to="/user/">{{ userName }}</router-link></p>
   </div>
   <base-button link="/" content="Home"></base-button>
   <base-button link="/groups" content="Groups"></base-button>
