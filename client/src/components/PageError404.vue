@@ -1,7 +1,7 @@
 <template>
   <div id="PageError404" class="page">
-    <p>La page recherchée n'existe pas.</p>
-    <router-link to="/">Retour</router-link>
+    <p>The page you are looking for does not exist.</p>
+    <router-link to="/">Back</router-link>
   </div>
 </template>
 
