@@ -1,9 +1,9 @@
 <template>
   <div id="PageHome" class="page">
-    <h1>Liste des utilisateurs</h1>
-    <p>Nombre d'utilisateurs : {{ users.length }}</p>
-    <div v-for="user in users" :key="user.id">
-      <router-link :to="'/user/' + user.id">{{ user.id }}</router-link> - {{ user.firstName }} - {{ user.lastName }} - {{ user.email }} - {{ user.phoneNumber }} - {{ user.tag }}
+    <h1>Users list</h1>
+    <p>Number of users : {{ users.count }}</p>
+    <div v-for="user in users.users" :key="user.id">
+      <router-link :to="'/user/' + user._id">{{ user._id }}</router-link> - {{ user.name }} - {{ user.email }}
     </div>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default {
   },
   mounted () {
     this.$http
-      .get('users')
+      .get('users/')
       .then(response => (this.users = response.data))
       .catch(error => console.log(error))
   }

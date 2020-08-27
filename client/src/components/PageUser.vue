@@ -1,63 +1,40 @@
 <template>
   <div id="PageUser" class="page">
+    <h1>{{ user.name }}</h1>
 
-    <div v-if="error">
-      <p>L'utilisateur recherché n'existe pas. Veuillez séléctionner un utilisateur existant.</p>
-      <router-link to="/">Retour</router-link>
-    </div>
-
-    <h1>{{ user.firstName }} {{ user.lastName.toUpperCase() }}</h1>
     <div v-if="!modify && !error">
-      {{ user.id }} - {{ user.firstName }} - {{ user.lastName }} - {{ user.email }} - {{ user.phoneNumber }} - {{ user.tag }}
+      {{ user._id }} - {{ user.name }} - {{ user.email }}
     </div>
-    <form v-if="modify">
+    <form v-if="modify" action="#" @submit.prevent="validModify">
       <fieldset>
       <div>
-        <label class="label" for="firstName">Prénom</label>
-        <input type="text" name="firstName" pattern="[A-Za-z]{1,}" required="" v-model="user.firstName">
-      </div>
-      <div>
-        <label class="label" for="lastName">Nom</label>
-        <input type="text" name="lastName" pattern="[A-Za-z]{1,}" required="" v-model="user.lastName">
+        <label class="label" for="name">Name</label>
+        <input type="text" name="name" pattern="[A-Za-z0-9]{1,}" required="" v-model="user.name">
       </div>
       <div>
         <label class="label" for="email">Email</label>
-        <input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 4}$" required="" v-model="user.email">
+        <input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required="" v-model="user.email">
       </div>
-      <div>
-        <label class="label" for="phoneNumber">Numéro de téléphone</label>
-        <input type="number" name="phoneNumber" min="0" maxlength="10" required="" v-model="user.phoneNumber">
-      </div>
-      <div>
-        <label class="label" for="tag">Tag</label>
-        <input type="text" name="tag" pattern="[a-z]{1,}" required="" v-model="user.tag">
-      </div>
+      <button type="submit">Valid</button>
+      <button @click="modify = false">Cancel</button>
     </fieldset>
     </form>
     <div v-if="!modify && !error">
-      <button @click="modifyUser">Modifier l'utilisateur</button>
-      <button @click="deleteUser">Supprimer l'utilisateur</button>
-    </div>
-    <div v-if="modify">
-      <button @click="validModify">Valider</button>
-      <button @click="modify = false">Annuler</button>
+      <button @click="modifyUser">Modify</button>
+      <button @click="deleteUser">Delete</button>
     </div>
   </div>
 </template>
 
 <script>
+/*import bcrypt from "bcryptjs"*/
+
 export default {
   name: 'PageHome',
   data () {
     return {
-      user: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-        tag: ""
-      },
-      error: false,
+      user: {},
+      error: null,
       modify: false
     }
   },
@@ -66,25 +43,32 @@ export default {
       this.modify = true
     },
     validModify() {
-      this.$http
-        .put(`users/${this.$route.params.id}`, this.user)
+      /*this.$http
+        .put(`users/${this.$store.state.userId}`, this.user)
         .catch(error => console.log(error))
 
-        this.modify = false
+        this.modify = false*/
+        alert("You can't do that for the moment")
     },
     deleteUser() {
       this.$http
-        .delete(`users/${this.$route.params.id}`)
+        .delete(`users/${this.$store.state.userId}`)
         .then(response => console.log(response))
         .catch(error => console.log(error))
 
-      window.location.href = '/'
+      this.$router.push('/').catch(()=>{})
+    },
+    checkPassword() {
+
     }
   },
   mounted () {
     this.$http
-      .get('users/' + this.$route.params.id)
-      .then(response => (this.user = response.data))
+      .get('users/' + this.$store.state.userId)
+      .then(response => {
+        this.user = response.data.user
+        this.user.password = ""
+      })
       .catch(error => {
         this.error = true
         console.log(error)
