@@ -5,7 +5,7 @@ import createPersistedState from "vuex-persistedstate"
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
-  state : {
+  state: {
     userId: null,
     userToken: ""
   },
