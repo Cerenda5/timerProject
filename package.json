@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "TimerProject",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon app.js",
     "test": "mocha --recursive --timeout 120000"
   },
-  "main": "src/server.js",
+  "main": "src/app.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Cerenda5/timerProject.git"

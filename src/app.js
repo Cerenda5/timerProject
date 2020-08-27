@@ -4,11 +4,19 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const http = require('http');
+
 
 const projectRoutes = require('./routes/projects');
 const groupRoutes = require('./routes/groups');
 const userRoutes = require('./routes/users');
 const timerRoutes = require('./routes/timers');
+
+const port = process.env.PORT || 3000;
+
+const server = http.createServer(app);
+
+server.listen(port, () => console.log('Server up and running'));
 
 // Connect to DB
 mongoose.connect(
