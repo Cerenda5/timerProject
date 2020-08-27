@@ -4,30 +4,30 @@ import {store} from './store/store.js'
 import VueRouter from 'vue-router'
 import axios from 'axios'
 
-import PageHome from './components/PageHome.vue'
-import PageLogin from './components/PageLogin.vue'
-import PageSignin from './components/PageSignin.vue'
-import PageUser from './components/PageUser.vue'
-import PageGroups from './components/PageGroups.vue'
-import PageProjects from './components/PageProjects.vue'
-import PageProjectDetails from './components/PageProjectDetails.vue'
-import PageError404 from './components/PageError404.vue'
-
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    { path: '/', component: PageHome },
-    { path: '/login/', component: PageLogin },
-    { path: '/signin/', component: PageSignin },
-    { path: '/user/:id', component: PageUser },
-    { path: '/groups/', component: PageGroups },
-    { path: '/projects/', component: PageProjects },
-    { path: '/project/:id/details/', component: PageProjectDetails },
-    { path: '/404', component: PageError404 },
+    { path: '/', component: () => import('./components/PageHome.vue'), meta: { requiresAuth: true } },
+    { path: '/login/', component: () => import('./components/PageLogin.vue'), meta: { onlyGuest: true } },
+    { path: '/signin/', component: () => import('./components/PageSignin.vue'), meta: { onlyGuest: true } },
+    { path: '/user/:id', component: () => import('./components/PageUser.vue'), meta: { requiresAuth: true } },
+    { path: '/groups/', component: () => import('./components/PageGroups.vue'), meta: { requiresAuth: true } },
+    { path: '/projects/', component: () => import('./components/PageProjects.vue'), meta: { requiresAuth: true } },
+    { path: '/project/:id/details/', component: () => import('./components/PageProjectDetails.vue'), meta: { requiresAuth: true } },
+    { path: '/404', component: () => import('./components/PageError404.vue') },
     { path: '*', redirect: '/404' }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    if (store.state.userId) next()
+    else next('/login/')
+  }
+  else if (to.meta.onlyGuest && store.state.userId) next(from)
+  else next()
 })
 
 // axios.defaults.baseURL = process.env.SERVER_URL

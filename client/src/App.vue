@@ -2,7 +2,7 @@
   <div id="app">
     <the-header></the-header>
     <div id="content">
-      <the-side-menu></the-side-menu>
+      <the-side-menu v-if="this.$store.state.userId"></the-side-menu>
       <router-view></router-view>
     </div>
   </div>

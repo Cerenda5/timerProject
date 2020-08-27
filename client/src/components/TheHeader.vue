@@ -12,7 +12,7 @@ export default {
   methods: {
     logout() {
       this.$store.commit('logout')
-      this.$router.push('/').catch(()=>{})
+      this.$router.push('/login').catch(()=>{})
     }
   }
 }

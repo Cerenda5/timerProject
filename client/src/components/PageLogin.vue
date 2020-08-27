@@ -1,6 +1,6 @@
 <template>
   <div id="PageLogin" class="page">
-    <h1>Connexion</h1>
+    <h1>Connection</h1>
 
     <p v-if="error" class="error">{{ errorMessage }}, please try again.</p>
 
@@ -8,13 +8,13 @@
       <fieldset>
       <div>
         <label class="label" for="email">Email</label>
-        <input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required="" v-model="user.email">
+        <input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required="" v-model.trim="user.email">
       </div>
       <div>
         <label class="label" for="password">Password</label>
-        <input type="password" name="password" required="" v-model="user.password">
+        <input type="password" name="password" required="" v-model.trim="user.password">
       </div>
-      <button @click="checkUser">Connect</button>
+      <button type="submit" @click="checkUser">Connect</button>
     </fieldset>
     </form>
 

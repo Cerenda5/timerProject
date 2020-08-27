@@ -29,10 +29,6 @@ export default {
   background-color: var(--medium-blue);
 }
 
-.button .router-link-exact-active div {
-  background-color: var(--clear-blue);
-}
-
 .button > div {
   background-color: var(--clear-blue);
   cursor: pointer;
