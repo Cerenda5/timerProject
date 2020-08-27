@@ -15,7 +15,7 @@
         <label class="label" for="email">Email</label>
         <input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required="" v-model="user.email">
       </div>
-      <button type="submit" @click="validModify">Valid</button>
+      <button type="submit">Valid</button>
       <button @click="modify = false">Cancel</button>
     </fieldset>
     </form>
@@ -67,7 +67,7 @@ export default {
       .get('users/' + this.$store.state.userId)
       .then(response => {
         this.user = response.data.user
-        this.user.password = 3
+        this.user.password = ""
       })
       .catch(error => {
         this.error = true

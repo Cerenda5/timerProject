@@ -7,16 +7,16 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     userId: null,
-    userToken: ""
+    userToken: null
   },
   mutations: {
-    login (state, id, token) {
-      state.userId = id
-      state.userToken = token
+    login (state, datas) {
+      state.userId = datas.id
+      state.userToken = datas.token
     },
     logout (state) {
       state.userId = null
-      state.userToken = ""
+      state.userToken = null
     }
   },
   plugins: [createPersistedState()]

@@ -21,7 +21,7 @@
         <input type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required="" v-model.trim="user.password">
       </div>
 
-      <button type="submit" @click="createUser">Create my account</button>
+      <button type="submit">Create my account</button>
     </fieldset>
     </form>
   </div>
@@ -51,7 +51,7 @@ export default {
           this.$http
             .post(`users/login`, {email: this.user.email, password: this.user.password})
             .then(response => {
-              this.$store.commit('login', response.data.id, response.data.token)
+              this.$store.commit('login', {id: response.data.id, token: response.data.token})
               this.$router.push('/').catch(()=>{})
             })
             .catch(error => {

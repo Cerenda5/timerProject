@@ -14,8 +14,9 @@ const router = new VueRouter({
     { path: '/signin/', component: () => import('./components/PageSignin.vue'), meta: { onlyGuest: true } },
     { path: '/user/', component: () => import('./components/PageUser.vue'), meta: { requiresAuth: true } },
     { path: '/groups/', component: () => import('./components/PageGroups.vue'), meta: { requiresAuth: true } },
+    { path: '/group/:id/', component: () => import('./components/PageGroupDetails.vue'), meta: { requiresAuth: true } },
     { path: '/projects/', component: () => import('./components/PageProjects.vue'), meta: { requiresAuth: true } },
-    { path: '/project/:id/details/', component: () => import('./components/PageProjectDetails.vue'), meta: { requiresAuth: true } },
+    { path: '/project/:id/', component: () => import('./components/PageProjectDetails.vue'), meta: { requiresAuth: true } },
     { path: '/404', component: () => import('./components/PageError404.vue') },
     { path: '*', redirect: '/404' }
   ]

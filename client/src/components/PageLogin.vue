@@ -14,7 +14,7 @@
         <label class="label" for="password">Password</label>
         <input type="password" name="password" required="" v-model.trim="user.password">
       </div>
-      <button type="submit" @click="checkUser">Connect</button>
+      <button type="submit">Connect</button>
     </fieldset>
     </form>
 
@@ -42,7 +42,7 @@ export default {
       this.$http
         .post(`users/login`, this.user)
         .then(response => {
-          this.$store.commit('login', response.data.id, response.data.token)
+          this.$store.commit('login', {id: response.data.id, token: response.data.token})
           this.$router.push('/').catch(()=>{})
         })
         .catch(error => {
