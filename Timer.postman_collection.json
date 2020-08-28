@@ -1,0 +1,535 @@
+{
+	"info": {
+		"_postman_id": "c6a1f9df-56e5-4a93-947a-e0f174bf91df",
+		"name": "Timer v2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "post new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Lucas\",\n    \"email\": \"lulu@gmail.com\",\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImthcmluZUBnbWFpbC5jb20iLCJ1c2VySWQiOiI1ZjQ0MjM4NDVmYmEyYjAwMmJiOGNhZDciLCJpYXQiOjE1OTgzMDE0OTIsImV4cCI6MTU5ODMwNTA5Mn0.6UtRV0i1oF8US02d5jIhqa2UgckYbHN4ZjKvn-mK7Kg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"propUser\": \"user\", \n        \"value\": \"Karine2\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user/5f4423845fba2b002bb8cad7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"5f4423845fba2b002bb8cad7"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Group",
+			"item": [
+				{
+					"name": "Post new Group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsInVzZXJJZCI6IjVmNDY3NzFlOTI3MTI3MDAyYjY4NmI2MSIsImlhdCI6MTU5ODU1Njg2MSwiZXhwIjoxNTk4NTYwNDYxfQ.HeeTdD408TjOa-VMqeNF3QoLP62A-918vQ2PCeKBFKk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Equipe 1\",\n    \"admin\": \"5f46771e927127002b686b61\",\n    \"userId\":\n    [\n         \"5f46771e927127002b686b61\",\n         \"5f4679c43b9dac0090f64eb5\"\n         \n    ],\n    \"projectId\" : [\n        \"5f468b2ce032c9049a715ebc\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/groups/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"groups",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Groups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete group by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get group by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsInVzZXJJZCI6IjVmNDY3NzFlOTI3MTI3MDAyYjY4NmI2MSIsImlhdCI6MTU5ODQ1NDA1NSwiZXhwIjoxNTk4NDU3NjU1fQ.0XJdWUqrpQaLVVWobRMSNP6ptCtKvIheqPfT-sjcU2U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"propAdmin\": \"projects\", \n        \"value\": [\n            \"5f4682421553270262848112\"\n        ]\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/groups/5f467c4ced08c200f02a1841",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"groups",
+								"5f467c4ced08c200f02a1841"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "Put project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsInVzZXJJZCI6IjVmNDY3NzFlOTI3MTI3MDAyYjY4NmI2MSIsImlhdCI6MTU5ODUyMzAxMCwiZXhwIjoxNTk4NTI2NjEwfQ.031_dsUUOhSYrarS8v2kILpM22ZMNGbv7us089cqtjg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"name\": \"testeurProject\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/projects/5f467f5c92fc4e01ba1ef704",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"projects",
+								"5f467f5c92fc4e01ba1ef704"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get project by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete project by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/projects/5f3d16c43a7631015caedce8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"projects",
+								"5f3d16c43a7631015caedce8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post new project",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsInVzZXJJZCI6IjVmNDY3NzFlOTI3MTI3MDAyYjY4NmI2MSIsImlhdCI6MTU5ODQ1NTc1MSwiZXhwIjoxNTk4NDU5MzUxfQ.U3ZRbfs4MgmeIYgcc8GzlwrZM8ULAgMCLkPEVyPRPL8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxhcmFvYUBnbWFpbC5jb20iLCJ1c2VySWQiOiI1ZjNlNjVhYTI2MGRmYTAxOTliNjhmY2YiLCJpYXQiOjE1OTc5MjYyODYsImV4cCI6MTU5NzkyOTg4Nn0.N3UGOxzKoqkWz6LFU_pmtox0gAFwt-t_mvD-nOqk1pM",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxhcmFvYUBnbWFpbC5jb20iLCJ1c2VySWQiOiI1ZjNlNjVhYTI2MGRmYTAxOTliNjhmY2YiLCJpYXQiOjE1OTgyNzI3MzcsImV4cCI6MTU5ODI3NjMzN30.gxzaEE4txh__wzTvHJ3ljjhlytVSTOgpy-qAmP6Mh3c",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Front-Cloud-Oragne\",\n    \"admin\": \"5f4811a59c3aa10004b97470\",\n    \"groupId\": \"5f48120a8f9b24002b6a9c5d\",\n    \"timerId\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/projects",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxhcmFvYUBnbWFpbC5jb20iLCJ1c2VySWQiOiI1ZjNlNjVhYTI2MGRmYTAxOTliNjhmY2YiLCJpYXQiOjE1OTgyNzM3MjMsImV4cCI6MTU5ODI3NzMyM30._EaSff7sw-WKnp1vgE4ur3InfqJ-gXWngNLJLqpMVA",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "877190fd-3778-47ec-b553-3a8aeeb9a5a6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1711f634-4ae5-4285-92df-64ed9a5ba67d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Timer",
+			"item": [
+				{
+					"name": "Post Timer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsInVzZXJJZCI6IjVmNDY3NzFlOTI3MTI3MDAyYjY4NmI2MSIsImlhdCI6MTU5ODQ1NTc1MSwiZXhwIjoxNTk4NDU5MzUxfQ.U3ZRbfs4MgmeIYgcc8GzlwrZM8ULAgMCLkPEVyPRPL8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"projectId\": \"5f467f5c92fc4e01ba1ef704\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/timers/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"timers",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all timers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Timer by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Timer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsInVzZXJJZCI6IjVmNDY3NzFlOTI3MTI3MDAyYjY4NmI2MSIsImlhdCI6MTU5ODQ2MTIzOSwiZXhwIjoxNTk4NDY0ODM5fQ.Ios-fZ7KXmSTieUXnUHVUEO-XeNqIx7w8Bd-9GxbVqQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"prop\": \"projectId\", \n        \"value\": \"5f468b81e032c9049a715ebe\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/timers/5f468aa7e032c9049a715eba",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"timers",
+								"5f468aa7e032c9049a715eba"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Timer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
